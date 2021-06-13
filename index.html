@@ -10,13 +10,28 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 
   <div id="app">
-    <p>{{message}}</p>
+    <p >{{message}}</p>
+    <button v-on:click="reverseMessage">
+      メッセージ反転
+    </button>
+    <p v-text="message"></p>
     <p>{{number + 3}}</p>
     <p>{{ok ? 'Yes' : 'No'}}</p>
     <p>{{sayHi()}}</p>
-    <button v-on:click="reverseMessage">
-    メッセージ反転
-    </button>
+    <p>{{html}}</p>
+    <p v-html="html"></p>
+    <a v-bind:href="url">Google</a>
+    <a v-bind:[attribute]="url">Google</a>
+    <a v-bind:href="urlTwitter" :id="number">Twitter</a>
+    <a v-bind="{href: urlTwitter, id: number}">Twitter</a>
+    <a v-bind="twitterObject">Twitter</a>
+    <p>現在{{ number }}回クリックされています</p>
+    <button v-on:click="number += 1">カウント</button>
+    <button v-on:click="countUp(2)">カウント</button>
+    <p v-on:mousemove="changeMousePosition(3, $event)">マウスを乗せてください<span v-on:mousemove.stop>反応しないでください</span></p>
+    <p>X:{{x}}, Y:{{y}}</p>
+    <a v-on:click="noEvent" href="https://google.com">Google</a>
+    <a v-on:click.prevent href="https://google.com">Google</a>
   </div>
 
   <script>
@@ -24,15 +39,38 @@
       el: '#app',
       data: {
         message: 'HelloWorld',
-        number: 3,
-        ok: true
+        number: 0,
+        ok: true,
+        html: "<h1>アイウエオ</h1>",
+        url: 'http://google.com',
+        attribute: 'href',
+        urlTwitter: 'https://twitter.com',
+        number: 31,
+        twitterObject: {
+          href: 'http://google.com',
+          id: 31
+        },
+        x: 0,
+        y: 0,
       },
       methods: {
         reverseMessage: function() {
           this.message = this.message.split('').reverse().join('')
         },
         sayHi: function(){
-          return 'Hi';
+          this.message = 'Hello jsjsjs'
+          return 'hi';
+        },
+        countUp: function(times){
+          this.number += times
+        },
+        changeMousePosition: function(divideNumber, event) {
+          event.stopPropagation()
+          this.x = event.clientX / divideNumber;
+          this.y = event.clientY / divideNumber;
+        },
+        noEvent: function(event){
+          event.preventDefault()
         }
       }
     })
